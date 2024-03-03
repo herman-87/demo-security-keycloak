@@ -1,5 +1,6 @@
 package com.herman87.demospringbootkeycloak;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,8 +14,10 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+@EnableMethodSecurity@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final JwtAuthConverter jwtAuthConverter;
 
     @Value("${spring.security.oauth2.resourceserver.jwt.jwt-set-uri}")
     private String jwtSetUri;
@@ -47,6 +50,7 @@ public class SecurityConfig {
                                                 jwtConfigurer ->
                                                         jwtConfigurer
                                                                 .jwkSetUri(jwtSetUri)
+                                                                .jwtAuthenticationConverter(jwtAuthConverter)
                                         )
                 );
         http
